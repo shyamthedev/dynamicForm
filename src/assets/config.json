@@ -1,0 +1,107 @@
+{
+    "formTitle":"Login Form",
+    "saveBtnTitle":"Register",
+    "resetBtnTitle":"Reset",
+    "formControls":[
+        {
+         "type":"text",
+         "name":"firstname",
+         "label":"First Name",
+         "placeholder":"Enter First Name",
+         "class":"col-md-6",
+         "value":"",
+         "validators":[
+            {
+              "validatorName":"required",
+              "required":true,
+              "message":"First Name is required"
+            },
+            {
+                "validatorName":"pattern",
+                "pattern":"^[a-zA-Z]+$",
+                "message":"Only Characters are allowed"
+            }
+         ]
+        },
+        {
+            "type":"email",
+            "name":"email",
+            "placeholder":"Enter Email",
+            "value":"",
+            "class":"col-md-6",
+            "label":"Email",
+            "validators":[
+                {
+                    "validatorName":"required",
+                    "message":"email is required",
+                    "required":true
+                },
+                {
+                    "validatorName":"email",
+                    "message":"Enter Valid Email",
+                    "email":"email"
+                }
+            ]
+        },
+        {
+            "type":"password",
+            "name":"password",
+            "placeholder":"Enter Password",
+            "value":"",
+            "class":"col-md-6",
+            "label":"Password",
+            "validators":[
+                {
+                    "validatorName":"required",
+                    "message":"password is required",
+                    "required":true
+                }
+            ]
+        },
+        {
+            "type":"radio",
+            "name":"gender",
+            "value":"",
+            "label":"Gender",
+            "placeholder":"Select Gender",
+            "class":"col-md-6",
+            "radioOptions":["Male","Female"],
+            "validators":[
+                {
+                    "validatorName":"required",
+                    "required":true,
+                    "message":"Gender is required"
+                }
+            ]
+        },
+        {
+            "type":"select",
+            "name":"technology",
+            "value":"",
+            "label":"Select Technology",
+            "placeholder":"Select Technology",
+            "class":"col-md-6",
+            "options": [
+                {
+                    "id": "1",
+                    "value": "Angular"
+                },
+                {
+                    "id": "2",
+                    "value": "React"
+                },
+                {
+                    "id": "3",
+                    "value": "Nodejs"
+                }
+            ],
+            "validators":[
+                {
+                    "validatorName":"required",
+                    "required":true,
+                    "message":"Gender is required"
+                }
+            ]
+        }
+    ]
+}
