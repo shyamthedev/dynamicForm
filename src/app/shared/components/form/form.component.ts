@@ -1,71 +1,60 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IForm, IFormControl, IValidator } from '../../inferfaces/form.interface';
-import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [FormsModule , ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule,RouterModule],
   templateUrl: './form.component.html',
   styleUrl: './form.component.css'
 })
 export class FormComponent implements OnInit {
-  
-  @Input() form !:IForm 
-
+  // Service injection
   fb = inject(FormBuilder)
+
+  @Input()  form!:IForm;
   dynamicForm:FormGroup = this.fb.group({})
-  load: boolean = false
+  
 
   ngOnInit(): void {
-    if(this.form?.formControls){
+    if(this.form.formControls){
       let formGroup:any = {}
       this.form.formControls.forEach((control:IFormControl)=>{
-        let formControlValidators:any = []
+        let controlValidators:any = []
         if(control.validators){
-          control.validators.forEach((val:IValidator)=>{
-            if(val.validatorName === 'required'){
-              formControlValidators.push(Validators.required)
-            }
-            if(val.validatorName === 'email'){
-              formControlValidators.push(Validators.email)
-            }
-            if(val.validatorName === 'minlength'){
-              formControlValidators.push(Validators.minLength(val.minlength as number))
-            }
-            if(val.validatorName === 'maxlength'){
-              formControlValidators.push(Validators.maxLength(val.maxlength as number))
-            }
-            if(val.validatorName === 'pattern'){
-              formControlValidators.push(Validators.pattern(val.pattern as string))
-            }
+          control.validators.forEach((validator:IValidator)=>{
+            if (validator.validatorName === 'required') controlValidators.push(Validators.required)
+            if (validator.validatorName === 'email') controlValidators.push(Validators.email)
+            if (validator.validatorName === 'pattern') controlValidators.push(Validators.pattern(validator.pattern as string))
+            if (validator.validatorName === 'minlength') controlValidators.push(Validators.minLength(validator.minlength as number))
+            if (validator.validatorName === 'maxlength') controlValidators.push(Validators.maxLength(validator.maxlength as number))
           })
         }
-        formGroup[control.name] = [control.value || '' , formControlValidators]
+        formGroup[control.name] = [control.value || '' , controlValidators]
       })
       this.dynamicForm = this.fb.group(formGroup)
     }
   }
 
-  onReset(){
-
+  getValidationError(control:IFormControl):string{
+   const myFormControl = this.dynamicForm.get(control.name)
+   let errorMessage = '';
+   control.validators?.forEach((validator:IValidator)=>{
+    if(myFormControl?.hasError(validator.validatorName as string)){
+      errorMessage = validator.message
+    }
+   })
+   return errorMessage
   }
 
   onSubmit(){
     console.log(this.dynamicForm.value)
   }
 
-  getValidationErros(control:IFormControl):string{
-   let errorMessage = ''
-   const myFormControl = this.dynamicForm.get(control.name)
-   control.validators?.forEach((val:IValidator)=>{
-     if(myFormControl?.hasError(val.validatorName as string)){
-      errorMessage = val.message as string
-     }
-   })
-   return errorMessage
+  onReset(){
+    this.dynamicForm.reset()
   }
-  
 
 }

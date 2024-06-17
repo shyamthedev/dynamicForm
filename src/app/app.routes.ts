@@ -10,10 +10,12 @@ export const routes: Routes = [
     },
     {
         path:'login',
-        component:LoginComponent
+        component:LoginComponent,
+        title:"Login Form"
     },
     {
         path:'register',
-        component:RegisterComponent
+        component:RegisterComponent,
+        title:"Register Form"
     }
 ];

@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormComponent, CommonModule],
+  imports: [FormComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -21,7 +21,7 @@ export class LoginComponent  implements OnInit{
   }
 
   getConfig(){
-    this.configService.getConfig().subscribe({
+    this.configService.getLoginConfig().subscribe({
       next:(res:IForm)=>{
         this.dynamicForm = res
         this.load = true;

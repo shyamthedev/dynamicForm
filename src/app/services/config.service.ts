@@ -9,7 +9,11 @@ export class ConfigService {
 
     http = inject(HttpClient);
 
-    getConfig(){
-        return this.http.get<IForm>('assets/config.json')
+    getLoginConfig(){
+        return this.http.get<IForm>('assets/login-config.json')
+    }
+
+    getRegistrationConfig(){
+        return this.http.get<IForm>('assets/register-config.json')
     }
 }

@@ -1,41 +1,63 @@
-
 <h3>{{form.formTitle}}</h3>
 <form [formGroup]="dynamicForm" class="row g-3">
 
- <ng-container *ngFor="let control of form.formControls" >
+    @for(control of form.formControls ; track control.name){
 
-    <div *ngIf="['text', 'email', 'password', 'date' ,'number'].includes(control.type)" [class]="control.class">
-        <label class="form-label" for="{{control.name}}">{{control.label}}</label>
-        <input type="{{control.type}}" name="{{control.name}}" placeholder="{{control.placeholder}}" formControlName="{{control.name}}" class="form-control">
-        <small class="text-danger" *ngIf="dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched">{{getValidationErros(control)}}</small>
+    @if(['text', 'email' , 'number' , 'password' , 'date'].includes(control.type)){
+    <div [class]="control.class">
+        <label [for]="control.name" class="form-label">{{control.label}}</label>
+        <input [type]="control.type" [name]="control.name" [value]="control.value" [placeholder]="control.placeholder"
+            [formControlName]="control.name" [id]="control.name" class="form-control">
+        @if(dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched){
+        <small class="text-danger">{{getValidationError(control)}}</small>
+        }
+    </div>
+    }
+
+    @if(control.type === 'select'){
+    <div [class]="control.class">
+        <label [for]="control.name" class="form-label">{{control.label}}</label>
+        <select [name]="control.name" [formControlName]="control.name" class="form-select" [id]="control.name">
+            <option value="" selected disabled>Choose...</option>
+
+            @for(option of control.options; track option.id){
+            <option [value]="option.value">{{option.value}}</option>
+            }
+        </select>
+        @if(dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched){
+        <small class="text-danger">{{getValidationError(control)}}</small>
+        }
+
+    </div>
+    }
+
+    @if(control.type === 'radio'){
+    <div [class]="control.class">
+        <label class="form-label">{{control.label}}</label>
+
+        @for(option of control.radioOptions; track option){
+        <div class="form-check">
+            <input class="form-check-input" type="radio" [value]="option" [name]="control.name" [formControlName]="control.name">
+            <label class="form-check-label">
+                {{option}}
+            </label>
+        </div>
+        }
+
+        @if(dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched){
+        <small class="text-danger">{{getValidationError(control)}}</small>
+        }
+    </div>
+    }
+
+    }
+
+    <div class="col-md-12">
+        <button type="submit" (click)="onSubmit()" class="btn btn-primary mx-2" [disabled]="dynamicForm.invalid">{{form.saveBtnTitle}}</button>
+        <button type="submit" (click)="onReset()" class="btn btn-secondary mx-2">{{form.resetBtnTitle}}</button>
+        @if(form.redirectLink){
+            <a [routerLink]="form.redirectLink" class="mx-5">{{form.redirectLinkTitle}}</a>
+        }
     </div>
 
-    <div *ngIf="control.type === 'select' " [class]="control.class">
-        <label class="form-label" for="{{control.name}}">{{control.label}}</label>
-        <select class="form-select" name="{{control.name}}" formControlName="{{control.name}}">
-            <option selected value=""> Select...</option>
-            <ng-container *ngFor="let option of control.options">
-                <option [value]="option.value">{{option.value}}</option>
-            </ng-container>
-          </select>
-          <small class="text-danger" *ngIf="dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched">{{getValidationErros(control)}}</small>
-    </div>
-
-    <div *ngIf="control.type === 'radio' " [class]="control.class">
-        <label class="form-check">{{control.label}}</label>
-        <ng-container *ngFor="let opt of control.radioOptions">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" [value]="opt" formControlName="{{control.name}}" >
-                <label class="form-check-label" [for]="control.name"> {{opt}} </label>
-            </div>
-        </ng-container>
-        <small class="text-danger" *ngIf="dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched">{{getValidationErros(control)}}</small>
-    </div>
-
- </ng-container>
- 
- <div class="col-md-12">
-    <button type="submit" (click)="onSubmit()" class="btn btn-primary mx-2">{{form.saveBtnTitle}}</button>
-    <button type="button" (click)="onReset()" class="btn btn-secondary mx-2">{{form.resetBtnTitle}}</button>
- </div>
 </form>

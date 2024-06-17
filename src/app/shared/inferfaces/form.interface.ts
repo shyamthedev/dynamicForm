@@ -2,6 +2,8 @@ export interface IForm {
     formTitle: string
     saveBtnTitle: string
     resetBtnTitle: string
+    redirectLink?:string
+    redirectLinkTitle?:string
     formControls: IFormControl[]
   }
   

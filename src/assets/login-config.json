@@ -1,0 +1,44 @@
+{
+    "formTitle":"Login",
+    "saveBtnTitle":"Login",
+    "resetBtnTitle":"Reset",
+    "redirectLink":"/register",
+    "redirectLinkTitle":"Please register here",
+    "formControls":[
+      {
+          "type":"email",
+          "name":"email",
+          "placeholder":"Enter Email",
+          "value":"",
+          "label":"Email",
+          "class":"col-md-12",
+          "validators":[
+              {
+                  "validatorName":"required",
+                  "required":true,
+                  "message":"Email is required"
+              },
+              {
+                  "validatorName":"email",
+                  "email":"email",
+                  "message":"Please enter valid email"
+              }
+          ]
+      },
+      {
+          "type":"password",
+          "name":"password",
+          "placeholder":"Enter Password",
+          "label":"Password",
+          "class":"col-md-12",
+          "value":"",
+          "validators":[
+              {
+                  "validatorName":"required",
+                  "required":true,
+                  "message":"Password is required"
+              }
+          ]
+      }
+    ]
+  }
